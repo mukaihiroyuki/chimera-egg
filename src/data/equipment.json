@@ -1,0 +1,101 @@
+[
+  {
+    "id": "veh-001",
+    "name": "バックホーA",
+    "level": 1,
+    "xp": 10,
+    "maintenanceHistory": [
+      {
+        "action": "オイル交換",
+        "date": "2025-09-08T10:00:00Z"
+      }
+    ]
+  },
+  {
+    "id": "veh-002",
+    "name": "2tトラック",
+    "level": 1,
+    "xp": 0,
+    "maintenanceHistory": [
+      {
+        "action": "清掃",
+        "date": "2025-09-01T10:00:00Z"
+      }
+    ]
+  },
+  {
+    "id": "veh-003",
+    "name": "発電機",
+    "level": 2,
+    "xp": 45,
+    "maintenanceHistory": [
+      {
+        "action": "点検",
+        "date": "2025-08-20T10:00:00Z"
+      },
+      {
+        "action": "部品交換",
+        "date": "2025-09-10T12:00:44.340Z"
+      }
+    ]
+  },
+  {
+    "id": "veh-004",
+    "name": "コンプレッサー",
+    "level": 1,
+    "xp": 25,
+    "maintenanceHistory": [
+      {
+        "action": "点検",
+        "date": "2025-08-01T10:00:00Z"
+      },
+      {
+        "action": "オイル交換",
+        "date": "2025-09-09T12:22:04.970Z"
+      }
+    ]
+  },
+  {
+    "id": "veh-005",
+    "name": "ダンプ (2t)",
+    "level": 1,
+    "xp": 50,
+    "maintenanceHistory": [
+      {
+        "action": "清掃",
+        "date": "2025-09-05T10:00:00Z"
+      }
+    ]
+  },
+  {
+    "id": "veh-006",
+    "name": "高所作業車",
+    "level": 3,
+    "xp": 75,
+    "maintenanceHistory": [
+      {
+        "action": "オイル交換",
+        "date": "2025-09-07T10:00:00Z"
+      }
+    ]
+  },
+  {
+    "id": "veh-007",
+    "name": "ユニック車",
+    "level": 1,
+    "xp": 0,
+    "maintenanceHistory": []
+  },
+  {
+    "id": "veh-008",
+    "name": "ローラー",
+    "level": 2,
+    "xp": 0,
+    "maintenanceHistory": [
+      {
+        "action": "点検",
+        "date": "2025-08-15T10:00:00Z"
+      }
+    ]
+  }
+]
