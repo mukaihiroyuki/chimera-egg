@@ -12,7 +12,6 @@ type Equipment = {
   status_now: string;
   level: number;
   xp: number;
-  [key: string]: any; // 不明な列も許容
 };
 
 // ステータスに応じてアイコンを返す
@@ -58,7 +57,7 @@ export default function EquipmentList() {
         throw new Error('必要なヘッダー (machine_id, machine_name, status_now) が見つかりません。');
       }
 
-      const formattedData: Equipment[] = values.slice(1).map((row: any[], rowIndex: number) => ({
+      const formattedData: Equipment[] = values.slice(1).map((row: string[], rowIndex: number) => ({
         id: row[idIndex] || `temp-id-${rowIndex}`,
         name: row[nameIndex] || 'N/A',
         status_now: row[statusIndex] || 'N/A',

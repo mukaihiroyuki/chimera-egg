@@ -4,9 +4,25 @@ import path from 'path';
 
 export async function GET() {
   try {
+    // 環境変数から認証情報を取得
+    const credentialsJson = process.env.GOOGLE_CREDENTIALS_JSON;
+
+    if (!credentialsJson) {
+      console.error('Error: GOOGLE_CREDENTIALS_JSON is not set.');
+      return NextResponse.json({ error: 'Configuration error: Google credentials not set.' }, { status: 500 });
+    }
+
+    let credentials;
+    try {
+      credentials = JSON.parse(credentialsJson);
+    } catch (e) {
+      console.error('Error parsing GOOGLE_CREDENTIALS_JSON:', e);
+      return NextResponse.json({ error: 'Configuration error: Invalid Google credentials format.' }, { status: 500 });
+    }
+
     // サービスアカウントを使って認証
     const auth = new google.auth.GoogleAuth({
-      keyFile: path.join(process.cwd(), 'google-credentials.json'),
+      credentials,
       scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
     });
 
