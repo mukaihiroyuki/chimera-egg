@@ -28,7 +28,7 @@ export default function EquipmentList() {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showWarningOnly, setShowWarningOnly] = useState(false);
+  const [showNonOperationalOnly, setShowNonOperationalOnly] = useState(false);
 
   const fetchEquipment = useCallback(async () => {
     setLoading(true);
@@ -97,8 +97,8 @@ export default function EquipmentList() {
     return 'bg-red-500';
   };
 
-  const filteredEquipment = showWarningOnly
-    ? equipment.filter(item => item.health < 40 || item.status_now.includes('故障'))
+  const filteredEquipment = showNonOperationalOnly
+    ? equipment.filter(item => !item.status_now.includes('稼働中'))
     : equipment;
 
   return (
@@ -107,16 +107,16 @@ export default function EquipmentList() {
 
       <div className="flex justify-center space-x-4 mb-6">
         <button
-          onClick={() => setShowWarningOnly(false)}
-          className={`px-4 py-2 rounded-md font-semibold ${!showWarningOnly ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+          onClick={() => setShowNonOperationalOnly(false)}
+          className={`px-4 py-2 rounded-md font-semibold ${!showNonOperationalOnly ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
         >
           すべて表示
         </button>
         <button
-          onClick={() => setShowWarningOnly(true)}
-          className={`px-4 py-2 rounded-md font-semibold ${showWarningOnly ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+          onClick={() => setShowNonOperationalOnly(true)}
+          className={`px-4 py-2 rounded-md font-semibold ${showNonOperationalOnly ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-700'}`}
         >
-          警告のみ
+          稼働中以外
         </button>
       </div>
 

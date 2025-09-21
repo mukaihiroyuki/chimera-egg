@@ -20,6 +20,29 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## ローカル開発環境のセットアップ
+
+このプロジェクトをローカルで動かすには、Google Sheets APIの認証情報（環境変数）を設定する必要があります。
+
+1.  プロジェクトのルートディレクトリ（`package.json` がある場所）に `.env.local` という名前のファイルを作成します。
+
+2.  Vercelのプロジェクト設定に保存されている `GOOGLE_CREDENTIALS_JSON` の値（`{"type": "service_account", ...}` から始まる長い文字列）をコピーします。
+
+3.  コピーした文字列の中にある `private_key` の値に含まれる改行文字 `\n` を、すべて `\\n` に置換します。
+    *   **重要:** この置換を行わないと、ローカルサーバーがJSONを正しく解析できずエラーになります。
+    *   例: `"-----BEGIN PRIVATE KEY-----\nMIIEvQ..."` → `"-----BEGIN PRIVATE KEY-----\\nMIIEvQ..."`
+
+4.  `.env.local` ファイルに、以下のように書き込みます。
+
+    ```
+    GOOGLE_CREDENTIALS_JSON=(手順3で置換した、全体が1行になった文字列)
+    ```
+
+5.  サーバーを再起動します (`npm run dev`)。
+
+**注意:** `.env.local` ファイルは `.gitignore` に記載されているため、Gitの管理対象にはなりません。絶対にGitHubにプッシュしないでください。
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
