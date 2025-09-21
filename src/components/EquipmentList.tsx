@@ -121,52 +121,55 @@ export default function EquipmentList() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredEquipment.map((item) => (
-          <div key={item.id} className="bg-white shadow-md rounded-lg p-5 flex flex-col justify-between">
-            <div>
-              <div className="flex justify-between items-start">
-                <div className="flex items-center">
-                  <span className="text-5xl mr-5">{getStatusIcon(item.status_now)}</span>
+        {filteredEquipment.map((item) => {
+          const xpPercentage = (item.xp / XP_TO_LEVEL_UP) * 100;
+          return (
+            <div key={item.id} className="bg-white shadow-md rounded-lg p-5 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center">
+                    <span className="text-5xl mr-5">{getStatusIcon(item.status_now)}</span>
+                    <div>
+                      <p className="text-2xl font-bold text-gray-800">{item.name}</p>
+                      <p className="text-sm text-gray-500">ID: {item.id}</p>
+                    </div>
+                  </div>
+                  <span className={`px-4 py-2 rounded-full text-base font-semibold ${getStatusColor(item.status_now)}`}>
+                    {item.status_now || '不明'}
+                  </span>
+                </div>
+                <div className="mt-4 space-y-3">
+                  {/* XP Bar */}
                   <div>
-                    <p className="text-2xl font-bold text-gray-800">{item.name}</p>
-                    <p className="text-sm text-gray-500">ID: {item.id}</p>
+                    <div className="flex justify-between items-center mb-1">
+                      <p className="text-lg font-bold text-yellow-500">Lv. {item.level}</p>
+                      <p className="text-sm text-gray-600">XP: {item.xp} / {XP_TO_LEVEL_UP}</p>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <div
+                        className="bg-yellow-400 h-3 rounded-full transition-all duration-500"
+                        style={{ width: `${xpPercentage}%` }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
-                <span className={`px-4 py-2 rounded-full text-base font-semibold ${getStatusColor(item.status_now)}`}>
-                  {item.status_now || '不明'}
-                </span>
-              </div>
-              <div className="mt-4 space-y-3">
-                {/* XP Bar */}
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <p className="text-lg font-bold text-yellow-500">Lv. {item.level}</p>
-                    <p className="text-sm text-gray-600">XP: {item.xp} / {XP_TO_LEVEL_UP}</p>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div
-                      className="bg-yellow-400 h-3 rounded-full transition-all duration-500"
-                      style={{ width: `${(item.xp / XP_TO_LEVEL_UP) * 100}%` }}
-                    ></div>
-                  </div>
-                </div>
-                {/* Health Bar */}
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <p className="text-base font-semibold text-gray-700">Health</p>
-                    <p className="text-base font-bold text-gray-800">{item.health} / 100</p>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-4">
-                    <div
-                      className={`h-4 rounded-full transition-all duration-500 ${getHealthColor(item.health)}`}
-                      style={{ width: `${item.health}%` }}
-                    ></div>
+                  {/* Health Bar */}
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <p className="text-base font-semibold text-gray-700">Health</p>
+                      <p className="text-base font-bold text-gray-800">{item.health} / 100</p>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-4">
+                      <div
+                        className={`h-4 rounded-full transition-all duration-500 ${getHealthColor(item.health)}`}
+                        style={{ width: `${item.health}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
