@@ -1,55 +1,58 @@
-import { google } from 'googleapis';
 import { NextResponse } from 'next/server';
-import path from 'path';
+import { google } from 'googleapis';
 
+// This function will handle the GET request to /api/sheets
 export async function GET() {
+  // 1. Decode Credentials from Base64
+  let credentials;
+  const credentialsBase64 = process.env.GOOGLE_CREDENTIALS_JSON;
+
+  if (!credentialsBase64) {
+    // If the environment variable is not set, return an error
+    return NextResponse.json({ error: "GOOGLE_CREDENTIALS_JSON is not set." }, { status: 500 });
+  }
+
   try {
-    // 環境変数から認証情報を取得
-    const credentialsJson = process.env.GOOGLE_CREDENTIALS_JSON;
+    const decodedCredentials = Buffer.from(credentialsBase64, 'base64').toString('utf8');
+    credentials = JSON.parse(decodedCredentials);
+  } catch (error) {
+    // If parsing fails, return an error
+    console.error("Failed to parse GOOGLE_CREDENTIALS_JSON:", error);
+    return NextResponse.json({ error: "Could not parse Google credentials. Check the environment variable format." }, { status: 500 });
+  }
 
-    if (!credentialsJson) {
-      console.error('Error: GOOGLE_CREDENTIALS_JSON is not set.');
-      return NextResponse.json({ error: 'Configuration error: Google credentials not set.' }, { status: 500 });
-    }
-
-    let credentials;
-    try {
-      credentials = JSON.parse(credentialsJson);
-    } catch (e) {
-      console.error('Error parsing GOOGLE_CREDENTIALS_JSON:', e);
-      return NextResponse.json({ error: 'Configuration error: Invalid Google credentials format.' }, { status: 500 });
-    }
-
-    // サービスアカウントを使って認証
+  try {
+    // 2. Authenticate with Google Sheets API
     const auth = new google.auth.GoogleAuth({
       credentials,
-      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'], // Use .readonly scope if you only need to read
     });
 
     const sheets = google.sheets({ version: 'v4', auth });
 
-    // 情報を取得するスプレッドシートのIDと範囲
-    const spreadsheetId = '1tiULGVsagDyL-OTEaWv0znPN-3fM3TX6Yi-p50jsGus';
-    const range = '全機材・車両リスト!A:P';
+    // --- IMPORTANT ---
+    // Replace with your actual Spreadsheet ID and range
+    const spreadsheetId = 'YOUR_SPREADSHEET_ID_HERE';
+    const range = 'Sheet1!A1:B2'; // Example range
 
-    // APIを叩いてデータを取得
+    // 3. Fetch data from the spreadsheet
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
       range,
     });
 
-    const values = response.data.values;
+    const rows = response.data.values;
 
-    if (!values || values.length === 0) {
-      return NextResponse.json({ error: 'No data found' }, { status: 404 });
-    }
-
-    // まずは加工せずに、取得したデータをそのまま返す
-    return NextResponse.json({ values });
+    // 4. Return the fetched data
+    return NextResponse.json({
+      message: "Successfully fetched data from Google Sheets!",
+      data: rows,
+    });
 
   } catch (error) {
-    console.error('Error fetching from Google Sheets API:', error);
-    const message = (error && typeof error === 'object' && 'message' in error) ? (error as {message: string}).message : 'An unknown error occurred';
-    return NextResponse.json({ error: 'Failed to fetch sheet data', details: message }, { status: 500 });
+    // If API call fails, return an error
+    console.error("The API returned an error: ", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return NextResponse.json({ error: "Failed to fetch data from Google Sheets.", details: errorMessage }, { status: 500 });
   }
 }
