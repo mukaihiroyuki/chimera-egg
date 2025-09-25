@@ -38,7 +38,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
     GOOGLE_CREDENTIALS_JSON=(手順3で置換した、全体が1行になった文字列)
     ```
 
-5.  サーバーを再起動します (`npm run dev`)。
+5.  サーバーを再起動します (`npm run dev`).
 
 **注意:** `.env.local` ファイルは `.gitignore` に記載されているため、Gitの管理対象にはなりません。絶対にGitHubにプッシュしないでください。
 
@@ -64,3 +64,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
  
 
 # Update for Vercel deployment
+# Update for Vercel deployment (take 2)
