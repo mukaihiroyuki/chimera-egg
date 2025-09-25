@@ -13,8 +13,8 @@ export async function GET() {
   }
 
   try {
-    const decodedCredentials = Buffer.from(credentialsBase64, 'base64').toString('utf8');
-    credentials = JSON.parse(decodedCredentials);
+    // Vercel auto-decodes the Base64 string, so we can parse it directly.
+    credentials = JSON.parse(credentialsBase64);
   } catch (error) {
     // If parsing fails, return an error
     console.error("Failed to parse GOOGLE_CREDENTIALS_JSON:", error);
