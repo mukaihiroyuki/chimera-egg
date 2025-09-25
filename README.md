@@ -61,3 +61,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 デプロイ再挑戦"Trigger new deploy" 
 "Final deploy trigger" 
 "Trigger new deploy after scope check" 
+ 
+
+# Update for Vercel deployment
