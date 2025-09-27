@@ -1,6 +1,13 @@
-// ↓↓↓↓↓↓ ここに貼り付けます ↓↓↓↓↓↓
+// ==================================================================
+// 1. import文 (モジュールの読み込み)
+// ==================================================================
+import { NextResponse } from 'next/server';
+import { google } from 'googleapis';
 
-// ---ここから追加---
+// ==================================================================
+// 2. デバッグコード
+// Vercelの環境変数がJSONとして正しい形をしているか、最初にチェックします
+// ==================================================================
 try {
   // まずBase64をデコードし、その後JSONとして解析できるか試す
   const decodedJson = Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, 'base64').toString('utf-8');
@@ -10,23 +17,10 @@ try {
   console.error("!!!!!! Vercel環境変数のJSONパースに失敗 !!!!!!");
   console.error(e);
 }
-// ---ここまで追加---
 
-
-// ↓↓↓↓↓↓ あなたの元々のコードは、この下にあります ↓↓↓↓↓↓
-
-import { NextResponse } from "next/server";
-import { google } from "googleapis";
-
-// This async function will handle the GET request to /api/sheets
-export async function GET() {
-  // ...あなたのコードの続き...
-}
-
-import { NextResponse } from 'next/server';
-import { google } from 'googleapis';
-
-// This function will handle the GET request to /api/sheets
+// ==================================================================
+// 3. あなたの元々のAPIコード
+// ==================================================================
 export async function GET() {
   // 1. Decode Credentials from Base64
   let credentials;
@@ -58,9 +52,9 @@ export async function GET() {
     const sheets = google.sheets({ version: 'v4', auth });
 
     // --- IMPORTANT ---
-    // Replace with your actual Spreadsheet ID and range
+    // あなたのスプレッドシートIDと範囲に書き換えてください
     const spreadsheetId = 'YOUR_SPREADSHEET_ID_HERE';
-    const range = 'Sheet1!A1:B2'; // Example range
+    const range = 'Sheet1!A1:B2'; // 例: 'シート1!A1:C10'
 
     // 3. Fetch data from the spreadsheet
     const response = await sheets.spreadsheets.values.get({
