@@ -1,3 +1,28 @@
+// ↓↓↓↓↓↓ ここに貼り付けます ↓↓↓↓↓↓
+
+// ---ここから追加---
+try {
+  // まずBase64をデコードし、その後JSONとして解析できるか試す
+  const decodedJson = Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, 'base64').toString('utf-8');
+  JSON.parse(decodedJson);
+  console.log("★★★★★ Vercel環境変数のJSONパースに成功！ ★★★★★");
+} catch (e) {
+  console.error("!!!!!! Vercel環境変数のJSONパースに失敗 !!!!!!");
+  console.error(e);
+}
+// ---ここまで追加---
+
+
+// ↓↓↓↓↓↓ あなたの元々のコードは、この下にあります ↓↓↓↓↓↓
+
+import { NextResponse } from "next/server";
+import { google } from "googleapis";
+
+// This async function will handle the GET request to /api/sheets
+export async function GET() {
+  // ...あなたのコードの続き...
+}
+
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 
