@@ -62,7 +62,9 @@ export default function Ranking() {
           throw new Error(errorData.details || 'ランキングデータの取得に失敗しました。');
         }
         const data = await response.json();
-        const { values } = data;
+        
+        // ★★★【修正済み】APIが返す 'data' プロパティからデータを取り出すように修正しました ★★★
+        const { data: values } = data;
 
         if (!values || values.length < 2) {
           setRanking([]);
