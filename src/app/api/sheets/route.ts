@@ -5,20 +5,22 @@ import { google } from 'googleapis';
 export async function GET() {
   // 1. Decode Credentials from Base64
   let credentials;
-  const credentialsBase64 = process.env.GOOGLE_CREDENTIALS_JSON;
+  const credentialsBase64 = process.env.GOOGLE_CREDENTIALS_BASE64;
 
   if (!credentialsBase64) {
     // If the environment variable is not set, return an error
-    return NextResponse.json({ error: "GOOGLE_CREDENTIALS_JSON is not set." }, { status: 500 });
+    return NextResponse.json({ error: "GOOGLE_CREDENTIALS_BASE64 is not set." }, { status: 500 });
   }
 
   try {
-    // Vercel auto-decodes the Base64 string, so we can parse it directly.
-    credentials = JSON.parse(credentialsBase64);
+    // Decode the Base64 string to a JSON string
+    const credentialsJson = Buffer.from(credentialsBase64, 'base64').toString('utf-8');
+    // Parse the JSON string into an object
+    credentials = JSON.parse(credentialsJson);
   } catch (error) {
-    // If parsing fails, return an error
-    console.error("Failed to parse GOOGLE_CREDENTIALS_JSON:", error);
-    return NextResponse.json({ error: "Could not parse Google credentials. Check the environment variable format." }, { status: 500 });
+    // If decoding or parsing fails, return an error
+    console.error("Failed to decode or parse GOOGLE_CREDENTIALS_BASE64:", error);
+    return NextResponse.json({ error: "Could not decode or parse Google credentials from Base64. Check the environment variable." }, { status: 500 });
   }
 
   try {
