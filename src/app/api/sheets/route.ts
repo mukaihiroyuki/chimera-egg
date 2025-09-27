@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 
-// --- デバッグコード（修正版） ---
+// --- デバッグコード（不要になったら削除してOKです） ---
 const credentialsBase64ForDebug = process.env.GOOGLE_CREDENTIALS_BASE64;
-// まず、環境変数が存在するかどうかをチェックする
 if (credentialsBase64ForDebug) {
   try {
     const decodedJson = Buffer.from(credentialsBase64ForDebug, 'base64').toString('utf-8');
@@ -17,7 +16,7 @@ if (credentialsBase64ForDebug) {
   console.error("!!!!!! GOOGLE_CREDENTIALS_BASE64 環境変数が設定されていません !!!!!!");
 }
 
-// --- あなたの元々のAPIコード ---
+// --- あなたのAPIコード ---
 export async function GET() {
   let credentials;
   const credentialsBase64 = process.env.GOOGLE_CREDENTIALS_BASE64;
@@ -39,12 +38,27 @@ export async function GET() {
       credentials,
       scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
     });
+
     const sheets = google.sheets({ version: 'v4', auth });
-    const spreadsheetId = 'YOUR_SPREADSHEET_ID_HERE';
-    const range = 'Sheet1!A1:B2';
-    const response = await sheets.spreadsheets.values.get({ spreadsheetId, range });
+
+    // ★★★ IDをあなたのものに書き換えました ★★★
+    const spreadsheetId = '1tiULGVsagDyL-OTEaWv0znPN-3fM3TX6Yi-p50jsGus';
+    
+    // ★★★ シート名と範囲は、ご自身のものに合わせて変更してください ★★★
+    const range = 'シート1!A:C'; // 例: 'シート1!A1:C50'
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range,
+    });
+
     const rows = response.data.values;
-    return NextResponse.json({ message: "Successfully fetched data from Google Sheets!", data: rows });
+
+    return NextResponse.json({
+      message: "Successfully fetched data from Google Sheets!",
+      data: rows,
+    });
+
   } catch (error) {
     console.error("The API returned an error: ", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
