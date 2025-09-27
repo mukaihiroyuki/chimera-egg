@@ -44,8 +44,8 @@ export async function GET() {
     // ★★★ IDをあなたのものに書き換えました ★★★
     const spreadsheetId = '1tiULGVsagDyL-OTEaWv0znPN-3fM3TX6Yi-p50jsGus';
     
-    // ★★★ シート名と範囲は、ご自身のものに合わせて変更してください ★★★
-    const range = 'シート1!A:C'; // 例: 'シート1!A1:C50'
+    // ★★★【修正済み】シート名と範囲を、あなたのスプレッドシートに合わせて変更しました ★★★
+    const range = '全機材・車両リスト!A:Z'; // 'シート1'から'全機材・車両リスト'へ変更し、範囲もA列からZ列まで取得するように広げました。
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
@@ -61,7 +61,9 @@ export async function GET() {
 
   } catch (error) {
     console.error("The API returned an error: ", error);
+    // errorオブジェクトがErrorインスタンスか確認し、安全にメッセージを取得します。
     const errorMessage = error instanceof Error ? error.message : String(error);
-    return NextResponse.json({ error: "Failed to fetch data from Google Sheets.", details: errorMessage }, { status: 500 });
+    // Google APIからの詳細なエラーメッセージをフロントエンドに返すように変更しました。
+    return NextResponse.json({ error: `Failed to fetch data from Google Sheets. Details: ${errorMessage}` }, { status: 500 });
   }
 }
